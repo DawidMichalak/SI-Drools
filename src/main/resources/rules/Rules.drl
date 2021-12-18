@@ -1,0 +1,42 @@
+package com.sample
+
+global com.sample.GUI gui
+
+declare GUIState
+	question : String @key
+	possibleAnswers : String[] @key
+	chosenAnswer : String @key
+end
+
+declare GUIResult
+	result : String @key
+end
+
+function String askQuestion(GUI gui, String question, String[] possibleAnswers) {
+    String answer = gui.askQuestion(question, possibleAnswers);
+    return answer;
+} 
+
+function void showResult(GUI gui, GUIResult result) {
+    gui.showResult(result.getResult());
+}
+
+rule "Init"
+    when
+    then
+    	String question = "How old are you?";
+		String[] possibleAnswers = {"0-5", "6-12", "13+"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+		insert(state);
+end
+
+rule "How old are you#0-5"
+	when 
+		GUIState(question == "How old are you?" && chosenAnswer == "0-5")
+	then
+		GUIResult result = new GUIResult("Good!");
+		showResult(gui, result);	
+		insert(result);
+end
+	
