@@ -10,7 +10,10 @@ import org.kie.api.runtime.KieSession;
 public class DroolsTest {
 
     public static final void main(String[] args) {
-        try {
+       
+    	Window window = new Window();
+    	
+    	/*try {
             // load up the knowledge base
 	        KieServices ks = KieServices.Factory.get();
     	    KieContainer kContainer = ks.getKieClasspathContainer();
@@ -25,6 +28,7 @@ public class DroolsTest {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+        */
     }
 
     public static class Message {
@@ -55,3 +59,4 @@ public class DroolsTest {
     }
 
 }
+
