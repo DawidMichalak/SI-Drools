@@ -8,7 +8,7 @@ public class DroolsTest {
     public static final void main(String[] args) {
         try {
         	GUI gui = new GUIwindow();
-        	
+
 	        KieServices ks = KieServices.Factory.get();
     	    KieContainer kContainer = ks.getKieClasspathContainer();
         	KieSession kSession = kContainer.newKieSession("ksession-rules");
@@ -19,3 +19,4 @@ public class DroolsTest {
         }
     }
 }
+
