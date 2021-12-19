@@ -212,7 +212,7 @@ rule "House#Plenty"
 		GUIState(question == getQuestionById(5) && chosenAnswer == "There's plenty of room")
     then
         String question = getQuestionById(6);
-        String[] possibleAnswers = {"Only if it's baroque", "My life is like a symphony", "Too many people too much noise"};
+        String[] possibleAnswers = {"Too many people too much noise", "My life is like a symphony", "Only if it's baroque"};
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
         insert(state);
@@ -497,6 +497,35 @@ rule "louder or elegant#elegant"
 		GUIState(question == getQuestionById(23) && chosenAnswer == "Elegant, please")
 	then
         GUIResult result = new GUIResult("Flute");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "fiddling with reeds#i love"
+	when
+		GUIState(question == getQuestionById(22) && chosenAnswer == "I love frustrating manual tasks")
+	then
+		String question = getQuestionById(24);
+        String[] possibleAnswers = {"If I get my own solo", "Definitely not"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "8OS cover band#my own solo"
+	when 
+		GUIState(question == getQuestionById(24) && chosenAnswer == "If I get my own solo")
+	then
+        GUIResult result = new GUIResult("Saxophone");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "8OS cover band#not"
+	when 
+		GUIState(question == getQuestionById(24) && chosenAnswer == "Definitely not")
+	then
+        GUIResult result = new GUIResult("Clarinet");
         showResult(gui, result);	
         insert(result);
 end
