@@ -36,6 +36,7 @@ function String getQuestionById(int id) {
         case 11: return "Do you have unlimited time, lots of money and a van?";
         case 12: return "Do you consider yourself to have some musical ability?";
         case 13: return "Do you have nerves and an upper lip of steel?";
+        case 14: return "Fancy yourself as a composer?";
 		default: return "Invalid";
 	}
 }
@@ -299,3 +300,15 @@ rule "folk music#flowers"
         showResult(gui, result);	
         insert(result);
 end
+
+rule "ability#some"
+	when
+		GUIState(question == getQuestionById(12) && chosenAnswer == "I have some")
+	then
+		String question = getQuestionById(14);
+        String[] possibleAnswers = {"Yes roll over Beethoven", "Not particulary"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
