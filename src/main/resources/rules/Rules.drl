@@ -37,8 +37,9 @@ function String getQuestionById(int id) {
         case 12: return "Do you consider yourself to have some musical ability?";
         case 13: return "Do you have nerves and an upper lip of steel?";
         case 14: return "Fancy yourself as a composer?";
-        case 15: return "Are you more Mozart or more McCartney";
-        case 16: return "Do you want to be centre of attention";
+        case 15: return "Are you more Mozart or more McCartney?";
+        case 16: return "Do you want to be centre of attention?";
+        case 17: return "Do you enjoy lifting heavy weights?";
 		default: return "Invalid";
 	}
 }
@@ -108,8 +109,9 @@ rule "piano"
 	when 
 		GUIState(question == getQuestionById(13) && chosenAnswer == "Not quite") 
 		|| GUIState(question == getQuestionById(3) && chosenAnswer == "Yes")
-		||  GUIState(question == getQuestionById(15) && chosenAnswer == "Mozart")
-		||  GUIState(question == getQuestionById(16) && chosenAnswer == "Yes I'm gonna be a star")
+		|| GUIState(question == getQuestionById(15) && chosenAnswer == "Mozart")
+		|| GUIState(question == getQuestionById(16) && chosenAnswer == "Yes I'm gonna be a star")
+		|| GUIState(question == getQuestionById(6) && chosenAnswer == "Too many people too much noise")
 		
 	then
         GUIResult result = new GUIResult("Piano");
@@ -336,6 +338,17 @@ rule "composer#no"
 	then
 		String question = getQuestionById(16);
         String[] possibleAnswers = {"Yes I'm gonna be a star", "Not really I'm a team player"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "orchestra#symphony"
+	when
+		GUIState(question == getQuestionById(6) && chosenAnswer == "My life is like a symphony")
+	then
+		String question = getQuestionById(17);
+        String[] possibleAnswers = {"I'm often mistaken for Superman", "I'm not a wimp but..."};
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
         insert(state);
