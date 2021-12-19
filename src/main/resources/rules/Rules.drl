@@ -43,6 +43,7 @@ function String getQuestionById(int id) {
         case 18: return "Do you fancy a bit of jazz on the side?";
         case 19: return "Do you have an aversion to spit or condensation?";
         case 20: return "Do you mind being the butt of people's jokes?";
+        case 21: return "Do you want a challenge?";
 		default: return "Invalid";
 	}
 }
@@ -428,5 +429,32 @@ rule "being butt of peoples jokes#i love laugh"
         insert(result);
 end
 
+rule "aversion to spit or condensation#music above hygiene"
+	when
+		GUIState(question == getQuestionById(19) && chosenAnswer == "Music above hygiene")
+	then
+		String question = getQuestionById(21);
+        String[] possibleAnswers = {"Life's too short", "I like a challenge", "Bring it on, give me a real challenge!"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
 
+rule "challenge#i like"
+	when 
+		GUIState(question == getQuestionById(21) && chosenAnswer == "I like a challenge")
+	then
+        GUIResult result = new GUIResult("Basson");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "challenge#bring it on"
+	when 
+		GUIState(question == getQuestionById(21) && chosenAnswer == "Bring it on, give me a real challenge!")
+	then
+        GUIResult result = new GUIResult("Oboe");
+        showResult(gui, result);	
+        insert(result);
+end
 
