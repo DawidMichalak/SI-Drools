@@ -20,6 +20,7 @@ public class DialogGUI implements GUI {
 		UIManager.put("Panel.background", new Color(245, 245, 245));
 		UIManager.put("Button.background", new Color(255, 255, 255));
 		UIManager.put("Button.foreground", Color.black);
+		UIManager.put("Button.focus", new Color(0, 0, 0, 0));
 	}
 
 	@Override
