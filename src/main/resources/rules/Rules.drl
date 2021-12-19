@@ -215,7 +215,7 @@ end
 
 rule "orchestra#baroque"
 	when 
-		GUIState(question == getQuestionById(6))
+		GUIState(question == getQuestionById(6) && chosenAnswer == "Only if it's baroque")
     then
         String question = getQuestionById(8);
         String[] possibleAnswers = {"Sitteth", "Standeth"};
