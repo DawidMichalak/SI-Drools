@@ -300,7 +300,7 @@ end
 
 rule "folk music#im not hippy"
 	when 
-		GUIState(question == getQuestionById(9) && chosenAnswer == "I'm not a hippy")
+		GUIState(question == getQuestionById(10) && chosenAnswer == "I'm not a hippy")
 	then
         GUIResult result = new GUIResult("Digital piano");
         showResult(gui, result);	
