@@ -6,7 +6,12 @@ public class GUIwindow implements GUI {
 	@Override
 	public String askQuestion(String question, String[] possibleAnswers) {
 		System.out.println(question);
-		return "0-5";
+		if(question == "How old are you?") {
+			return "0-5";
+		}
+		else {
+			return "Yes!";
+		}
 	}
 
 	@Override
