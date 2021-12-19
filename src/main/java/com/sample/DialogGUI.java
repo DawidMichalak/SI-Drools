@@ -36,7 +36,9 @@ public class DialogGUI implements GUI {
 				null,
 				possibleAnswers,
 				possibleAnswers[0]);
-		
+		if (answerIndex < 0) {
+			System.exit(0);
+		}
 		return possibleAnswers[answerIndex];
 	}
 
