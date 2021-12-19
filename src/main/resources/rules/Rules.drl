@@ -38,6 +38,7 @@ function String getQuestionById(int id) {
         case 13: return "Do you have nerves and an upper lip of steel?";
         case 14: return "Fancy yourself as a composer?";
         case 15: return "Are you more Mozart or more McCartney";
+        case 16: return "Do you want to be centre of attention";
 		default: return "Invalid";
 	}
 }
@@ -108,6 +109,7 @@ rule "piano"
 		GUIState(question == getQuestionById(13) && chosenAnswer == "Not quite") 
 		|| GUIState(question == getQuestionById(3) && chosenAnswer == "Yes")
 		||  GUIState(question == getQuestionById(15) && chosenAnswer == "Mozart")
+		||  GUIState(question == getQuestionById(16) && chosenAnswer == "Yes I'm gonna be a star")
 		
 	then
         GUIResult result = new GUIResult("Piano");
@@ -175,9 +177,10 @@ rule "Do you want to drive your family mad#wouldnt"
         insert(result);
 end
 
-rule "Do you want to drive your family mad#im not a brat"
+rule "Big house"
 	when 
 		GUIState(question == getQuestionById(4) && chosenAnswer == "I'm not a brat!")
+		|| GUIState(question == getQuestionById(16) && chosenAnswer == "Not really I'm a team player")
 	then
         String question = getQuestionById(5);
         String[] possibleAnswers = {"I live in a church", "There's plenty of room", "It's more compact and bijou"};
@@ -322,6 +325,17 @@ rule "composer#yes"
 	then
 		String question = getQuestionById(15);
         String[] possibleAnswers = {"Mozart", "McCartney"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "composer#no"
+	when
+		GUIState(question == getQuestionById(14) && chosenAnswer == "Not particulary")
+	then
+		String question = getQuestionById(16);
+        String[] possibleAnswers = {"Yes I'm gonna be a star", "Not really I'm a team player"};
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
         insert(state);
