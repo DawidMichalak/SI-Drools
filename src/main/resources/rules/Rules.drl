@@ -309,7 +309,7 @@ end
 
 rule "acoustic guitar"
 	when 
-		GUIState(question == getQuestionById(9) && chosenAnswer == "I always wear flowers in my hair") ||
+		GUIState(question == getQuestionById(10) && chosenAnswer == "I always wear flowers in my hair") ||
 		 GUIState(question == getQuestionById(15) && chosenAnswer == "McCartney")
 	then
         GUIResult result = new GUIResult("Acoustic guitar");
