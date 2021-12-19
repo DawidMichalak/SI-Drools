@@ -31,6 +31,11 @@ function String getQuestionById(int id) {
         case 6: return "Do you want to play in an orchestra?";
         case 7: return "Do you hate your neighbours?";
         case 8: return "Dast thou wish to sit or stand?";
+        case 9: return "Do you have a good sense of rhythm & timing?";
+        case 10: return "Do you like folk music?";
+        case 11: return "Do you have unlimited time, lots of money and a van?";
+        case 12: return "Do you consider yourself to have some musical ability?";
+        case 13: return "Do you have nerves and an upper lip of steel?";
 		default: return "Invalid";
 	}
 }
@@ -43,6 +48,75 @@ rule "Init"
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
 		insert(state);
+end
+
+rule "How old are you#13+"
+	when 
+		GUIState(question == getQuestionById(1) && chosenAnswer == "13+")
+	then
+		String question = getQuestionById(11);
+		String[] possibleAnswers = {"Not really", "Yes I've also got a chauffeur"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+		insert(state);
+end
+
+rule "unlimited time and money#Yes"
+	when 
+		GUIState(question == getQuestionById(11) && chosenAnswer == "Yes I've also got a chauffeur")
+	then
+        GUIResult result = new GUIResult("Harp");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "unlimited time and money#not really"
+	when 
+		GUIState(question == getQuestionById(11) && chosenAnswer == "Not really")
+	then
+		String question = getQuestionById(12);
+		String[] possibleAnswers = {"Yes, I'm amazing", "I have some", "Not an iota"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+		insert(state);
+end
+
+rule "musical ability#not iota"
+	when 
+		GUIState(question == getQuestionById(12) && chosenAnswer == "Not an iota")
+	then
+        GUIResult result = new GUIResult("Comb and tissue paper");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "musical ability#im amazing"
+	when 
+		GUIState(question == getQuestionById(12) && chosenAnswer == "Yes, I'm amazing")
+	then
+		String question = getQuestionById(13);
+		String[] possibleAnswers = {"Not quite", "That sounds just like me"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+		insert(state);
+end
+
+rule "nerves#not quite"
+	when 
+		GUIState(question == getQuestionById(13) && chosenAnswer == "Not quite")
+	then
+        GUIResult result = new GUIResult("Piano");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "nerves#that sounds like me"
+	when 
+		GUIState(question == getQuestionById(13) && chosenAnswer == "That sounds just like me")
+	then
+        GUIResult result = new GUIResult("French horn");
+        showResult(gui, result);	
+        insert(result);
 end
 
 rule "How old are you#0-5"
@@ -87,6 +161,15 @@ rule "Are you prepared to put in a lot of practice time#no"
 		insert(state);
 end
 
+rule "Are you prepared to put in a lot of practice time#yes"
+	when 
+		GUIState(question == getQuestionById(3) && chosenAnswer == "Yes")
+	then
+        GUIResult result = new GUIResult("Piano");
+        showResult(gui, result);	
+        insert(result);
+end
+
 rule "Do you want to drive your family mad#wouldnt"
 	when 
 		GUIState(question == getQuestionById(4) && chosenAnswer == "Wouldn't I just")
@@ -121,7 +204,7 @@ rule "House#Plenty"
 		GUIState(question == getQuestionById(5) && chosenAnswer == "There's plenty of room")
     then
         String question = getQuestionById(6);
-        String[] possibleAnswers = {"Only if it's baroque"};
+        String[] possibleAnswers = {"Only if it's baroque", "My life is like a symphony", "Too many people too much noise"};
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
         insert(state);
@@ -167,3 +250,60 @@ rule "sit or stand#Standeth"
         insert(result);
 end
 
+rule "neighbours hate#with a passion"
+	when 
+		GUIState(question == getQuestionById(7) && chosenAnswer == "With a passion")
+    then
+        String question = getQuestionById(9);
+        String[] possibleAnswers = {"I'm a human metronome", "It's OK I guess"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "sense of rhythm#metronome"
+	when 
+		GUIState(question == getQuestionById(9) && chosenAnswer == "I'm a human metronome")
+	then
+        GUIResult result = new GUIResult("Percussion");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "sense of rhythm#OK"
+	when 
+		GUIState(question == getQuestionById(9) && chosenAnswer == "It's OK I guess")
+	then
+        GUIResult result = new GUIResult("Trombone");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "neighbours hate#no"
+	when 
+		GUIState(question == getQuestionById(7) && chosenAnswer == "No, they're quite nice")
+    then
+        String question = getQuestionById(10);
+        String[] possibleAnswers = {"I'm not a hippy", "I always wear flowers in my hair"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "folk music#im not hippy"
+	when 
+		GUIState(question == getQuestionById(9) && chosenAnswer == "I'm not a hippy")
+	then
+        GUIResult result = new GUIResult("Digital piano");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "folk music#flowers"
+	when 
+		GUIState(question == getQuestionById(9) && chosenAnswer == "I always wear flowers in my hair")
+	then
+        GUIResult result = new GUIResult("Acoustic guitar");
+        showResult(gui, result);	
+        insert(result);
+end
