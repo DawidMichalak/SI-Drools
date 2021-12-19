@@ -40,6 +40,7 @@ function String getQuestionById(int id) {
         case 15: return "Are you more Mozart or more McCartney?";
         case 16: return "Do you want to be centre of attention?";
         case 17: return "Do you enjoy lifting heavy weights?";
+        case 18: return "Do you fancy a bit of jazz on the side?";
 		default: return "Invalid";
 	}
 }
@@ -352,4 +353,35 @@ rule "orchestra#symphony"
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
         insert(state);
+end
+
+
+rule "lifting#superman"
+	when
+		GUIState(question == getQuestionById(17) && chosenAnswer == "I'm often mistaken for Superman")
+	then
+		String question = getQuestionById(18);
+        String[] possibleAnswers = {"Jazz isn't music it's noise", "Sure thing, cat!"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "jazz#noise"
+	when 
+		GUIState(question == getQuestionById(18) && chosenAnswer == "Jazz isn't music it's noise")
+	then
+        GUIResult result = new GUIResult("Tuba");
+        showResult(gui, result);	
+        insert(result);
+end
+
+
+rule "jazz#sure"
+	when 
+		GUIState(question == getQuestionById(18) && chosenAnswer == "Sure thing, cat!")
+	then
+        GUIResult result = new GUIResult("Double bass");
+        showResult(gui, result);	
+        insert(result);
 end
