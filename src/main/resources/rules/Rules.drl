@@ -101,9 +101,10 @@ rule "musical ability#im amazing"
 		insert(state);
 end
 
-rule "nerves#not quite"
+rule "piano"
 	when 
-		GUIState(question == getQuestionById(13) && chosenAnswer == "Not quite")
+		GUIState(question == getQuestionById(13) && chosenAnswer == "Not quite") || GUIState(question == getQuestionById(3) && chosenAnswer == "Yes")
+		
 	then
         GUIResult result = new GUIResult("Piano");
         showResult(gui, result);	
@@ -159,15 +160,6 @@ rule "Are you prepared to put in a lot of practice time#no"
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
 		insert(state);
-end
-
-rule "Are you prepared to put in a lot of practice time#yes"
-	when 
-		GUIState(question == getQuestionById(3) && chosenAnswer == "Yes")
-	then
-        GUIResult result = new GUIResult("Piano");
-        showResult(gui, result);	
-        insert(result);
 end
 
 rule "Do you want to drive your family mad#wouldnt"
