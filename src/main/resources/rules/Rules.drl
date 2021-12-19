@@ -42,6 +42,7 @@ function String getQuestionById(int id) {
         case 17: return "Do you enjoy lifting heavy weights?";
         case 18: return "Do you fancy a bit of jazz on the side?";
         case 19: return "Do you have an aversion to spit or condensation?";
+        case 20: return "Do you mind being the butt of people's jokes?";
 		default: return "Invalid";
 	}
 }
@@ -397,3 +398,35 @@ rule "lifting#wimp"
         GUIState state = new GUIState(question, possibleAnswers, answer);
         insert(state);
 end
+
+rule "aversion to spit or condensation#yuck"
+	when
+		GUIState(question == getQuestionById(19) && chosenAnswer == "Yuck I prefer staying dry")
+	then
+		String question = getQuestionById(20);
+        String[] possibleAnswers = {"Goodness no I'm terribly sensitive", "I love a good laugh"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "being butt of peoples jokes#no"
+	when 
+		GUIState(question == getQuestionById(20) && chosenAnswer == "Goodness no I'm terribly sensitive")
+	then
+        GUIResult result = new GUIResult("Cello");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "being butt of peoples jokes#i love laugh"
+	when 
+		GUIState(question == getQuestionById(20) && chosenAnswer == "I love a good laugh")
+	then
+        GUIResult result = new GUIResult("Viola");
+        showResult(gui, result);	
+        insert(result);
+end
+
+
+
