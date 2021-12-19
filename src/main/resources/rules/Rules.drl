@@ -41,6 +41,7 @@ function String getQuestionById(int id) {
         case 16: return "Do you want to be centre of attention?";
         case 17: return "Do you enjoy lifting heavy weights?";
         case 18: return "Do you fancy a bit of jazz on the side?";
+        case 19: return "Do you have an aversion to spit or condensation?";
 		default: return "Invalid";
 	}
 }
@@ -384,4 +385,15 @@ rule "jazz#sure"
         GUIResult result = new GUIResult("Double bass");
         showResult(gui, result);	
         insert(result);
+end
+
+rule "lifting#wimp"
+	when
+		GUIState(question == getQuestionById(17) && chosenAnswer == "I'm not a wimp but...")
+	then
+		String question = getQuestionById(19);
+        String[] possibleAnswers = {"Music above hygiene", "Yuck I prefer staying dry"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
 end
