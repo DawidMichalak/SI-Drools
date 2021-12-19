@@ -36,6 +36,12 @@ function String getQuestionById(int id) {
         case 11: return "Do you have unlimited time, lots of money and a van?";
         case 12: return "Do you consider yourself to have some musical ability?";
         case 13: return "Do you have nerves and an upper lip of steel?";
+        case 14: return "Fancy yourself as a composer?";
+        case 15: return "Are you more Mozart or more McCartney?";
+        case 16: return "Do you want to be centre of attention?";
+        case 17: return "Do you enjoy lifting heavy weights?";
+        case 18: return "Do you fancy a bit of jazz on the side?";
+        case 19: return "Do you have an aversion to spit or condensation?";
 		default: return "Invalid";
 	}
 }
@@ -101,9 +107,14 @@ rule "musical ability#im amazing"
 		insert(state);
 end
 
-rule "nerves#not quite"
+rule "piano"
 	when 
-		GUIState(question == getQuestionById(13) && chosenAnswer == "Not quite")
+		GUIState(question == getQuestionById(13) && chosenAnswer == "Not quite") 
+		|| GUIState(question == getQuestionById(3) && chosenAnswer == "Yes")
+		|| GUIState(question == getQuestionById(15) && chosenAnswer == "Mozart")
+		|| GUIState(question == getQuestionById(16) && chosenAnswer == "Yes I'm gonna be a star")
+		|| GUIState(question == getQuestionById(6) && chosenAnswer == "Too many people too much noise")
+		
 	then
         GUIResult result = new GUIResult("Piano");
         showResult(gui, result);	
@@ -161,15 +172,6 @@ rule "Are you prepared to put in a lot of practice time#no"
 		insert(state);
 end
 
-rule "Are you prepared to put in a lot of practice time#yes"
-	when 
-		GUIState(question == getQuestionById(3) && chosenAnswer == "Yes")
-	then
-        GUIResult result = new GUIResult("Piano");
-        showResult(gui, result);	
-        insert(result);
-end
-
 rule "Do you want to drive your family mad#wouldnt"
 	when 
 		GUIState(question == getQuestionById(4) && chosenAnswer == "Wouldn't I just")
@@ -179,9 +181,10 @@ rule "Do you want to drive your family mad#wouldnt"
         insert(result);
 end
 
-rule "Do you want to drive your family mad#im not a brat"
+rule "Big house"
 	when 
 		GUIState(question == getQuestionById(4) && chosenAnswer == "I'm not a brat!")
+		|| GUIState(question == getQuestionById(16) && chosenAnswer == "Not really I'm a team player")
 	then
         String question = getQuestionById(5);
         String[] possibleAnswers = {"I live in a church", "There's plenty of room", "It's more compact and bijou"};
@@ -223,7 +226,7 @@ end
 
 rule "orchestra#baroque"
 	when 
-		GUIState(question == getQuestionById(6))
+		GUIState(question == getQuestionById(6) && chosenAnswer == "Only if it's baroque")
     then
         String question = getQuestionById(8);
         String[] possibleAnswers = {"Sitteth", "Standeth"};
@@ -299,11 +302,98 @@ rule "folk music#im not hippy"
         insert(result);
 end
 
-rule "folk music#flowers"
+rule "acoustic guitar"
 	when 
-		GUIState(question == getQuestionById(9) && chosenAnswer == "I always wear flowers in my hair")
+		GUIState(question == getQuestionById(9) && chosenAnswer == "I always wear flowers in my hair") ||
+		 GUIState(question == getQuestionById(15) && chosenAnswer == "McCartney")
 	then
         GUIResult result = new GUIResult("Acoustic guitar");
         showResult(gui, result);	
         insert(result);
+end
+
+rule "ability#some"
+	when
+		GUIState(question == getQuestionById(12) && chosenAnswer == "I have some")
+	then
+		String question = getQuestionById(14);
+        String[] possibleAnswers = {"Yes roll over Beethoven", "Not particulary"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "composer#yes"
+	when
+		GUIState(question == getQuestionById(14) && chosenAnswer == "Yes roll over Beethoven")
+	then
+		String question = getQuestionById(15);
+        String[] possibleAnswers = {"Mozart", "McCartney"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "composer#no"
+	when
+		GUIState(question == getQuestionById(14) && chosenAnswer == "Not particulary")
+	then
+		String question = getQuestionById(16);
+        String[] possibleAnswers = {"Yes I'm gonna be a star", "Not really I'm a team player"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "orchestra#symphony"
+	when
+		GUIState(question == getQuestionById(6) && chosenAnswer == "My life is like a symphony")
+	then
+		String question = getQuestionById(17);
+        String[] possibleAnswers = {"I'm often mistaken for Superman", "I'm not a wimp but..."};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+
+rule "lifting#superman"
+	when
+		GUIState(question == getQuestionById(17) && chosenAnswer == "I'm often mistaken for Superman")
+	then
+		String question = getQuestionById(18);
+        String[] possibleAnswers = {"Jazz isn't music it's noise", "Sure thing, cat!"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "jazz#noise"
+	when 
+		GUIState(question == getQuestionById(18) && chosenAnswer == "Jazz isn't music it's noise")
+	then
+        GUIResult result = new GUIResult("Tuba");
+        showResult(gui, result);	
+        insert(result);
+end
+
+
+rule "jazz#sure"
+	when 
+		GUIState(question == getQuestionById(18) && chosenAnswer == "Sure thing, cat!")
+	then
+        GUIResult result = new GUIResult("Double bass");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "lifting#wimp"
+	when
+		GUIState(question == getQuestionById(17) && chosenAnswer == "I'm not a wimp but...")
+	then
+		String question = getQuestionById(19);
+        String[] possibleAnswers = {"Music above hygiene", "Yuck I prefer staying dry"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
 end
