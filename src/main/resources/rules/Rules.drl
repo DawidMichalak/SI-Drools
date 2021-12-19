@@ -44,6 +44,9 @@ function String getQuestionById(int id) {
         case 19: return "Do you have an aversion to spit or condensation?";
         case 20: return "Do you mind being the butt of people's jokes?";
         case 21: return "Do you want a challenge?";
+        case 22: return "Do you mind fiddling about with reeds?";
+        case 23: return "Loud and bold or soft and elegant?";
+        case 24: return "Do you want to moonlight in an 8OS cover band?";
 		default: return "Invalid";
 	}
 }
@@ -454,6 +457,46 @@ rule "challenge#bring it on"
 		GUIState(question == getQuestionById(21) && chosenAnswer == "Bring it on, give me a real challenge!")
 	then
         GUIResult result = new GUIResult("Oboe");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "challenge#lifes too short"
+	when
+		GUIState(question == getQuestionById(21) && chosenAnswer == "Life's too short")
+	then
+		String question = getQuestionById(22);
+        String[] possibleAnswers = {"That sounds like way too much hassle", "I love frustrating manual tasks"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "fiddling with reeds#too much hassle"
+	when
+		GUIState(question == getQuestionById(22) && chosenAnswer == "That sounds like way too much hassle")
+	then
+		String question = getQuestionById(23);
+        String[] possibleAnswers = {"Louder!!!", "Elegant, please"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "louder or elegant#louder"
+	when 
+		GUIState(question == getQuestionById(23) && chosenAnswer == "Louder!!!")
+	then
+        GUIResult result = new GUIResult("Trumpet");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "louder or elegant#elegant"
+	when 
+		GUIState(question == getQuestionById(23) && chosenAnswer == "Elegant, please")
+	then
+        GUIResult result = new GUIResult("Flute");
         showResult(gui, result);	
         insert(result);
 end
