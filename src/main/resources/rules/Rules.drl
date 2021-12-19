@@ -15,16 +15,30 @@ end
 function String askQuestion(GUI gui, String question, String[] possibleAnswers) {
     String answer = gui.askQuestion(question, possibleAnswers);
     return answer;
-} 
+}
 
 function void showResult(GUI gui, GUIResult result) {
     gui.showResult(result.getResult());
 }
 
+function String getQuestionById(int id) {
+	switch(id) {
+		case 1: return "How old are you?";
+		case 2: return "Are you really doing this quiz? Impressive! Do your parents want you to be a child prodigy?";
+        case 3: return "Are you prepared to put in a lot of practice time?";
+        case 4: return "Do you want to drive your family mad?";
+        case 5: return "Do you have a big house?";
+        case 6: return "Do you want to play in an orchestra?";
+        case 7: return "Do you hate your neighbours?";
+        case 8: return "Dast thou wish to sit or stand?";
+		default: return "Invalid";
+	}
+}
+
 rule "Init"
     when
     then
-    	String question = "How old are you?";
+    	String question = getQuestionById(1);
 		String[] possibleAnswers = {"0-5", "6-12", "13+"};
         String answer = askQuestion(gui, question, possibleAnswers);
         GUIState state = new GUIState(question, possibleAnswers, answer);
@@ -33,10 +47,123 @@ end
 
 rule "How old are you#0-5"
 	when 
-		GUIState(question == "How old are you?" && chosenAnswer == "0-5")
+		GUIState(question == getQuestionById(1) && chosenAnswer == "0-5")
 	then
-		GUIResult result = new GUIResult("Good!");
-		showResult(gui, result);	
-		insert(result);
+		String question = getQuestionById(2);
+		String[] possibleAnswers = {"Yes!", "No, I'm happy just to play"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+		insert(state);
 end
 	
+rule "Are you really doing this quiz#Yes"
+	when 
+		GUIState(question == getQuestionById(2) && chosenAnswer == "Yes!")
+	then
+        GUIResult result = new GUIResult("Violin");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "Are you really doing this quiz#No How old are you#6-12"
+	when 
+		GUIState((question == getQuestionById(2) && chosenAnswer == "No, I'm happy just to play") || (question == getQuestionById(1) && chosenAnswer == "6-12"))
+	then
+		String question = getQuestionById(3);
+		String[] possibleAnswers = {"No I just want to get playing as quickly as possible", "Yes"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+		insert(state);
+end
+
+rule "Are you prepared to put in a lot of practice time#no"
+	when 
+		GUIState(question == getQuestionById(3) && chosenAnswer == "No I just want to get playing as quickly as possible")
+	then
+		String question = getQuestionById(4);
+		String[] possibleAnswers = {"Wouldn't I just", "I'm not a brat!"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+		insert(state);
+end
+
+rule "Do you want to drive your family mad#wouldnt"
+	when 
+		GUIState(question == getQuestionById(4) && chosenAnswer == "Wouldn't I just")
+	then
+        GUIResult result = new GUIResult("Recorder");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "Do you want to drive your family mad#im not a brat"
+	when 
+		GUIState(question == getQuestionById(4) && chosenAnswer == "I'm not a brat!")
+	then
+        String question = getQuestionById(5);
+        String[] possibleAnswers = {"I live in a church", "There's plenty of room", "It's more compact and bijou"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "House#Church"
+	when 
+		GUIState(question == getQuestionById(5) && chosenAnswer == "I live in a church")
+	then
+        GUIResult result = new GUIResult("Organ");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "House#Plenty"
+	when 
+		GUIState(question == getQuestionById(5) && chosenAnswer == "There's plenty of room")
+    then
+        String question = getQuestionById(6);
+        String[] possibleAnswers = {"Only if it's baroque"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "House#compact"
+	when 
+		GUIState(question == getQuestionById(5) && chosenAnswer == "It's more compact and bijou")
+    then
+        String question = getQuestionById(7);
+        String[] possibleAnswers = {"With a passion", "No, they're quite nice"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "orchestra#baroque"
+	when 
+		GUIState(question == getQuestionById(6))
+    then
+        String question = getQuestionById(8);
+        String[] possibleAnswers = {"Sitteth", "Standeth"};
+        String answer = askQuestion(gui, question, possibleAnswers);
+        GUIState state = new GUIState(question, possibleAnswers, answer);
+        insert(state);
+end
+
+rule "sit or stand#sitteth"
+	when 
+		GUIState(question == getQuestionById(8) && chosenAnswer == "Sitteth")
+	then
+        GUIResult result = new GUIResult("Lute");
+        showResult(gui, result);	
+        insert(result);
+end
+
+rule "sit or stand#Standeth"
+	when 
+		GUIState(question == getQuestionById(8) && chosenAnswer == "Standeth")
+	then
+        GUIResult result = new GUIResult("Harpsichord");
+        showResult(gui, result);	
+        insert(result);
+end
+
